@@ -6,15 +6,27 @@ const { v4: uuidv4 } = require('uuid');
 
 const app = express();
 const server = http.createServer(app);
+
+// Allow multiple origins for production
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://whos-that-game.vercel.app",
+  /https:\/\/.*\.vercel\.app$/,  // Allow all Vercel preview deployments
+  process.env.FRONTEND_URL
+].filter(Boolean);
+
 const io = socketIo(server, {
   cors: {
-    origin: process.env.FRONTEND_URL || "http://localhost:3000",
+    origin: allowedOrigins,
     methods: ["GET", "POST"],
     credentials: true
   }
 });
 
-app.use(cors());
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
 app.use(express.json());
 
 // Basic route to prevent "Cannot GET /" error
