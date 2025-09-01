@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 const Lobby = ({ roomCode, players, isHost, onStartGame, onBackToMenu }) => {
-  const [isAnimated, setIsAnimated] = useState(false);
+  const [, setIsAnimated] = useState(false);
 
   useEffect(() => {
     // Trigger CSS animations after component mounts

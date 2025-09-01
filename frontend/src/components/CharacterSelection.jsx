@@ -17,7 +17,6 @@ const CharacterSelection = ({
     return () => clearTimeout(timer);
   }, []);
 
-  const currentPlayer = players.find(p => p.id === myPlayerId);
   const hasSelected = !!selectedCharacter;
 
   return (

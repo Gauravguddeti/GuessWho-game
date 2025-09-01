@@ -134,7 +134,7 @@ function App() {
     return () => {
       newSocket.close();
     };
-  }, []); // Remove playerName dependency to prevent socket recreation
+  }, [playerName]); // Add playerName to dependencies
 
   const createGame = (name) => {
     setPlayerName(name);

@@ -165,12 +165,6 @@ const BoardInline = ({
     maxHeight: isMobile ? '180px' : '220px'
   };
 
-  const characterCardHoverStyle = {
-    ...characterCardStyle,
-    borderColor: '#0066cc',
-    transform: 'scale(1.05)'
-  };
-
   const eliminatedCardStyle = {
     ...characterCardStyle,
     opacity: '0.3',
@@ -413,7 +407,6 @@ const BoardInline = ({
   };
 
   const currentPlayer = players.find(p => p.id === currentTurn);
-  const otherPlayer = players.find(p => p.id !== myPlayerId);
 
   return (
     <div style={containerStyle}>
