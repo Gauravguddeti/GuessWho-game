@@ -2,6 +2,8 @@
 
 A modern, web-based version of the classic "Guess Who?" guessing game built with React and Node.js. Play against friends in real-time with beautiful animations and responsive design.
 
+🚀 **Now live on Vercel!**
+
 ## ✨ Features
 
 - **Real-time Multiplayer**: Play against friends using WebSocket connections
