@@ -19,7 +19,7 @@ app.use(express.json());
 
 // Basic route to prevent "Cannot GET /" error
 app.get('/', (req, res) => {
-  res.json({ message: 'Guess Who? Game Server Running', status: 'ok' });
+  res.json({ message: 'Who\'s That? Game Server Running', status: 'ok' });
 });
 
 app.get('/health', (req, res) => {
