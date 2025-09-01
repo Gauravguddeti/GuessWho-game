@@ -68,7 +68,7 @@ const Board = ({
           <div className="bg-white rounded-2xl p-4 border-2 border-gray-200 shadow-lg">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
               <div>
-                <h1 className="text-3xl font-bold text-gray-800 mb-2">🎯 Guess Who?</h1>
+                <h1 className="text-3xl font-bold text-gray-800 mb-2">🎯 Who's That?</h1>
                 <div className="flex items-center space-x-4 text-sm">
                   <span className="bg-blue-200 text-blue-800 px-3 py-1 rounded-full font-bold">
                     🎮 Playing

@@ -49,7 +49,7 @@ const Menu = ({ onCreateGame, onJoinGame, error, setError }) => {
       {/* Main Title Above the Card */}
       <div className="text-center mb-8">
         <h1 className="title-font text-7xl font-bold text-amber-100 drop-shadow-2xl mb-4">
-          Guess Who?
+          Who's That?
         </h1>
         <p className="elegant-font text-2xl text-amber-200 drop-shadow-lg font-medium">
           Challenge a friend in the classic guessing game!

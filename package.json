@@ -1,7 +1,7 @@
 {
-  "name": "guess-who-game",
+  "name": "whos-that-game",
   "version": "1.0.0",
-  "description": "A multiplayer Guess Who game built with React and Node.js",
+  "description": "A multiplayer Who's That? game built with React and Node.js",
   "main": "index.js",
   "scripts": {
     "install-all": "cd frontend && npm install && cd ../backend && npm install",
@@ -20,7 +20,7 @@
     "react",
     "nodejs",
     "socket.io",
-    "guess-who"
+    "whos-that"
   ],
   "author": "Gaurav Guddeti",
   "license": "MIT",

@@ -1,8 +1,8 @@
-# 🎯 Guess Who? - Online Multiplayer Game
+# 🎯 Who's That? - Online Multiplayer Game
 
-A modern, web-based version of the classic "Guess Who?" guessing game built with React and Node.js. Play against friends in real-time with beautiful animations and responsive design.
+A modern, web-based version of the classic guessing game built with React and Node.js. Play against friends in real-time with beautiful animations and responsive design.
 
-🚀 **Now live on Vercel!**
+🚀 **Live at:** https://whos-that-game.vercel.app
 
 ## ✨ Features
 

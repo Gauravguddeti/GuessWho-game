@@ -412,7 +412,7 @@ const BoardInline = ({
     <div style={containerStyle}>
       {/* Header */}
       <div style={headerStyle}>
-        <h1 style={titleStyle}>Guess Who? - Game Board</h1>
+        <h1 style={titleStyle}>Who's That? - Game Board</h1>
         <div style={gameInfoStyle}>
           <div>
             <span style={secretCharacterStyle}>

@@ -1,6 +1,6 @@
 #!/usr/bin/env pwsh
 
-Write-Host "🎯 Starting Guess Who? Game..." -ForegroundColor Cyan
+Write-Host "🎯 Starting Who's That? Game..." -ForegroundColor Cyan
 Write-Host ""
 
 Write-Host "📦 Checking dependencies..." -ForegroundColor Yellow
@@ -43,6 +43,6 @@ Write-Host ""
 Write-Host "📋 Both servers are running in separate windows."
 Write-Host "📋 Close those windows to stop the servers."
 Write-Host ""
-Write-Host "🎮 Enjoy playing Guess Who? with your friends!" -ForegroundColor Magenta
+Write-Host "🎮 Enjoy playing Who's That? with your friends!" -ForegroundColor Magenta
 
 Read-Host "Press Enter to close this window"

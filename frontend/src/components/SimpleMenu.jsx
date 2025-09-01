@@ -56,7 +56,7 @@ const SimpleMenu = ({ onCreateGame, onJoinGame, error, setError }) => {
           marginBottom: '20px',
           fontFamily: 'Arial, sans-serif'
         }}>
-          🎯 Guess Who?
+          🎯 Who's That?
         </h1>
         
         <p style={{

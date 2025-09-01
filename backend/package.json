@@ -1,7 +1,7 @@
 {
-  "name": "guess-who-backend",
+  "name": "whos-that-backend",
   "version": "1.0.0",
-  "description": "Backend server for Guess Who multiplayer game",
+  "description": "Backend server for Who's That? multiplayer game",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",

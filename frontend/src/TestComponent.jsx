@@ -26,7 +26,7 @@ const TestComponent = () => {
             marginBottom: '16px',
             color: '#1f2937'
           }}>
-            🎯 Guess Who?
+            🎯 Who's That?
           </h1>
           <p style={{
             color: '#6b7280',

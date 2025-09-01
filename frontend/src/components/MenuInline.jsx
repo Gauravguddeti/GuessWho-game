@@ -150,7 +150,7 @@ const MenuInline = ({ onCreateGame, onJoinGame, error, setError }) => {
       <div className="menu-container" style={formContainerStyle}>
         <div>
           <h1 className="menu-title" style={titleStyle}>
-            🎯 Guess Who?
+            🎯 Who's That?
           </h1>
           <p style={subtitleStyle}>
             Challenge a friend in the classic guessing game!
