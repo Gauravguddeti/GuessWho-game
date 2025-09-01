@@ -26,23 +26,93 @@ function App() {
   const [notification, setNotification] = useState('');
   const [connectingToServer, setConnectingToServer] = useState(true);
 
+  // Wake up server function
+  const wakeUpServer = async () => {
+    const serverUrl = process.env.REACT_APP_SERVER_URL || 'http://localhost:3001';
+    try {
+      setNotification('Waking up server... ☕');
+      const response = await fetch(`${serverUrl}/health`, { 
+        method: 'GET',
+        timeout: 30000 
+      });
+      if (response.ok) {
+        setNotification('Server is ready! 🚀');
+        setTimeout(() => setNotification(''), 2000);
+      }
+    } catch (error) {
+      console.log('Server wake-up ping failed:', error);
+      setNotification('Server starting... This may take a moment ⏳');
+    }
+  };
+
   // Initialize socket connection
   useEffect(() => {
     const serverUrl = process.env.REACT_APP_SERVER_URL || 'http://localhost:3001';
-    const newSocket = io(serverUrl);
+    
+    // Wake up server first (for Render free tier)
+    wakeUpServer();
+    
+    // Add connection timeout
+    const connectionTimeout = setTimeout(() => {
+      if (connectingToServer) {
+        setNotification('Server is starting up... This may take 30-60 seconds on first load ⏳');
+      }
+    }, 5000);
+
+    const newSocket = io(serverUrl, {
+      timeout: 60000, // 60 second timeout
+      transports: ['websocket', 'polling'], // Try websocket first, fallback to polling
+      forceNew: false,
+      reconnection: true,
+      reconnectionDelay: 1000,
+      reconnectionAttempts: 5,
+      maxReconnectionAttempts: 5
+    });
+    
     setSocket(newSocket);
 
     // Connection status handlers
     newSocket.on('connect', () => {
+      clearTimeout(connectionTimeout);
       setConnectingToServer(false);
-      setNotification('Connected to server! 🎮');
-      setTimeout(() => setNotification(''), 3000);
+      setLoading(false);
+      setError('');
+      setNotification('Connected! 🎮');
+      setTimeout(() => setNotification(''), 2000);
     });
 
-    newSocket.on('disconnect', () => {
-      setConnectingToServer(true);
-      setNotification('Connection lost. Reconnecting... 🔄');
+    newSocket.on('disconnect', (reason) => {
+      if (reason === 'io server disconnect') {
+        // Server disconnected us, don't auto-reconnect
+        setNotification('Server disconnected 🔌');
+      } else {
+        // Client disconnected, will auto-reconnect
+        setNotification('Reconnecting... 🔄');
+      }
     });
+
+    newSocket.on('connect_error', (error) => {
+      setNotification('Connection failed. Retrying... ⚠️');
+      console.log('Connection error:', error);
+    });
+
+    newSocket.on('reconnect', (attemptNumber) => {
+      setNotification('Reconnected! 🎉');
+      setTimeout(() => setNotification(''), 2000);
+    });
+
+    newSocket.on('reconnect_failed', () => {
+      setConnectingToServer(false);
+      setError('Unable to connect to server. Please refresh the page.');
+      setNotification('Connection failed ❌');
+    });
+
+    // Keep server alive with periodic pings (prevent Render sleep)
+    const keepAliveInterval = setInterval(() => {
+      if (newSocket.connected) {
+        newSocket.emit('ping');
+      }
+    }, 10 * 60 * 1000); // Ping every 10 minutes
 
     // Socket event listeners
     newSocket.on('gameCreated', ({ roomCode, playerName }) => {
@@ -156,22 +226,62 @@ function App() {
     });
 
     return () => {
+      clearInterval(keepAliveInterval);
+      clearTimeout(connectionTimeout);
       newSocket.close();
     };
   }, [playerName]); // Add playerName to dependencies
 
   const createGame = (name) => {
+    if (!socket || !socket.connected) {
+      setNotification('Not connected to server. Please wait... ⏳');
+      return;
+    }
+    
     setLoading(true);
     setPlayerName(name);
+    setError('');
     setNotification('Creating game... 🎮');
+    
+    // Add timeout for game creation
+    const timeout = setTimeout(() => {
+      setLoading(false);
+      setNotification('Game creation taking too long. Please try again. ⏰');
+      setTimeout(() => setNotification(''), 3000);
+    }, 10000); // 10 second timeout
+    
     socket.emit('createGame', name);
+    
+    // Clear timeout when game is created (handled in gameCreated event)
+    socket.once('gameCreated', () => {
+      clearTimeout(timeout);
+    });
   };
 
   const joinGame = (name, code) => {
+    if (!socket || !socket.connected) {
+      setNotification('Not connected to server. Please wait... ⏳');
+      return;
+    }
+    
     setLoading(true);
     setPlayerName(name);
+    setError('');
     setNotification('Joining game... 🎯');
+    
+    // Add timeout for game joining
+    const timeout = setTimeout(() => {
+      setLoading(false);
+      setNotification('Join taking too long. Check room code and try again. ⏰');
+      setTimeout(() => setNotification(''), 3000);
+    }, 10000); // 10 second timeout
+    
     socket.emit('joinGame', { roomCode: code, playerName: name });
+    
+    // Clear timeout when game is joined
+    socket.once('gameJoined', () => {
+      clearTimeout(timeout);
+    });
   };
 
   const startGame = () => {
@@ -267,10 +377,20 @@ function App() {
             <div style={{
               fontSize: '18px',
               fontWeight: 'bold',
-              color: '#333'
+              color: '#333',
+              marginBottom: '10px'
             }}>
               {connectingToServer ? 'Connecting to server...' : 'Loading...'}
             </div>
+            {connectingToServer && (
+              <div style={{
+                fontSize: '14px',
+                color: '#666',
+                maxWidth: '300px'
+              }}>
+                First time may take 30-60 seconds as the server starts up ⏳
+              </div>
+            )}
           </div>
         </div>
       )}

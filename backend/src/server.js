@@ -371,6 +371,11 @@ io.on('connection', (socket) => {
     console.log(`Game ended in room ${roomCode}. Winner: ${room.players[room.winner].name}`);
   });
 
+  // Handle keep-alive ping
+  socket.on('ping', () => {
+    socket.emit('pong');
+  });
+
   // Handle disconnection
   socket.on('disconnect', () => {
     console.log('User disconnected:', socket.id);
