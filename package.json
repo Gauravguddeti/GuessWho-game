@@ -1,0 +1,30 @@
+{
+  "name": "guess-who-game",
+  "version": "1.0.0",
+  "description": "A multiplayer Guess Who game built with React and Node.js",
+  "main": "index.js",
+  "scripts": {
+    "install-all": "cd frontend && npm install && cd ../backend && npm install",
+    "build": "cd frontend && npm run build",
+    "start": "cd backend && npm start",
+    "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm start\"",
+    "deploy-vercel": "node deploy-vercel.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Gauravguddeti/GuessWho-game.git"
+  },
+  "keywords": [
+    "game",
+    "multiplayer",
+    "react",
+    "nodejs",
+    "socket.io",
+    "guess-who"
+  ],
+  "author": "Gaurav Guddeti",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}
