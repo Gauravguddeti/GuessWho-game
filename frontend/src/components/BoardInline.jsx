@@ -465,7 +465,11 @@ const BoardInline = ({
                     alt={character.name}
                     style={characterImageStyle}
                     onError={(e) => {
-                      e.target.style.display = 'none';
+                      console.log('Image failed to load:', character.image);
+                      e.target.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100" height="100" fill="%23f0f0f0"/><text x="50" y="50" text-anchor="middle" dy="0.3em" font-size="12">' + character.name + '</text></svg>';
+                    }}
+                    onLoad={() => {
+                      console.log('Image loaded successfully:', character.image);
                     }}
                   />
                   <div style={characterNameStyle}>{character.name}</div>

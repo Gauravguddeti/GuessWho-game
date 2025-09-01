@@ -41,32 +41,32 @@ app.get('/health', (req, res) => {
 // Game state storage
 const gameRooms = {};
 
-// Character data - all 24 characters with proper names
+// Character data - all 24 characters with proper names and gender
 const characters = [
-  { id: 1, name: "Amara", description: "Young woman, dark skin, curly hair, red shirt", image: "character1.png" },
-  { id: 2, name: "Harold", description: "Elderly man, bald, glasses, blue sweater", image: "character2.png" },
-  { id: 3, name: "Tommy", description: "Teen boy, light skin, freckles, baseball cap", image: "character3.png" },
-  { id: 4, name: "Linda", description: "Middle-aged woman, blonde hair, green dress", image: "character4.png" },
-  { id: 5, name: "Raj", description: "Man with beard, turban, yellow shirt", image: "character5.png" },
-  { id: 6, name: "Fatima", description: "Woman with hijab, purple clothing", image: "character6.png" },
-  { id: 7, name: "Kenji", description: "Asian man, short black hair, gray hoodie", image: "character7.png" },
-  { id: 8, name: "Zoe", description: "Woman with pink dyed hair, nose ring, denim jacket", image: "character8.png" },
-  { id: 9, name: "Tex", description: "Man with mustache, cowboy hat, plaid shirt", image: "character9.png" },
-  { id: 10, name: "Maya", description: "Woman with braids, hoop earrings, orange blouse", image: "character10.png" },
-  { id: 11, name: "Marcus", description: "Man with afro, sunglasses, leather jacket", image: "character11.png" },
-  { id: 12, name: "Eleanor", description: "Elderly woman, white hair bun, floral dress", image: "character12.png" },
-  { id: 13, name: "Sophie", description: "Young girl, ponytail, striped shirt", image: "character13.png" },
-  { id: 14, name: "Rex", description: "Man with buzzcut, tattoo on neck, black t-shirt", image: "character14.png" },
-  { id: 15, name: "Claire", description: "Woman with short bob haircut, glasses, cardigan", image: "character15.png" },
-  { id: 16, name: "DJ", description: "Man with spiky hair, headphones around neck", image: "character16.png" },
-  { id: 17, name: "River", description: "Non-binary person, green hair, piercings, hoodie", image: "character17.png" },
-  { id: 18, name: "Aurora", description: "Woman with hat, scarf, and coat", image: "character18.png" },
-  { id: 19, name: "Jamal", description: "Man with dreadlocks, casual t-shirt", image: "character19.png" },
-  { id: 20, name: "Blake", description: "Young man, messy blonde hair, hoodie", image: "character20.png" },
-  { id: 21, name: "Victoria", description: "Woman with long straight hair, red lipstick, formal blouse", image: "character21.png" },
-  { id: 22, name: "Bear", description: "Man with long beard, beanie, casual jacket", image: "character22.png" },
-  { id: 23, name: "Sunny", description: "Woman with curly short hair, yellow dress", image: "character23.png" },
-  { id: 24, name: "Oliver", description: "Man with medium-length hair, suit and tie", image: "character24.png" }
+  { id: 1, name: "Amara", description: "Young woman, dark skin, curly hair, red shirt", image: "character1.png", gender: "female" },
+  { id: 2, name: "Harold", description: "Elderly man, bald, glasses, blue sweater", image: "character2.png", gender: "male" },
+  { id: 3, name: "Tommy", description: "Teen boy, light skin, freckles, baseball cap", image: "character3.png", gender: "male" },
+  { id: 4, name: "Linda", description: "Middle-aged woman, blonde hair, green dress", image: "character4.png", gender: "female" },
+  { id: 5, name: "Raj", description: "Man with beard, turban, yellow shirt", image: "character5.png", gender: "male" },
+  { id: 6, name: "Fatima", description: "Woman with hijab, purple clothing", image: "character6.png", gender: "female" },
+  { id: 7, name: "Kenji", description: "Asian man, short black hair, gray hoodie", image: "character7.png", gender: "male" },
+  { id: 8, name: "Zoe", description: "Woman with pink dyed hair, nose ring, denim jacket", image: "character8.png", gender: "female" },
+  { id: 9, name: "Tex", description: "Man with mustache, cowboy hat, plaid shirt", image: "character9.png", gender: "male" },
+  { id: 10, name: "Maya", description: "Woman with braids, hoop earrings, orange blouse", image: "character10.png", gender: "female" },
+  { id: 11, name: "Marcus", description: "Man with afro, sunglasses, leather jacket", image: "character11.png", gender: "male" },
+  { id: 12, name: "Eleanor", description: "Elderly woman, white hair bun, floral dress", image: "character12.png", gender: "female" },
+  { id: 13, name: "Sophie", description: "Young girl, ponytail, striped shirt", image: "character13.png", gender: "female" },
+  { id: 14, name: "Rex", description: "Man with buzzcut, tattoo on neck, black t-shirt", image: "character14.png", gender: "male" },
+  { id: 15, name: "Claire", description: "Woman with short bob haircut, glasses, cardigan", image: "character15.png", gender: "female" },
+  { id: 16, name: "DJ", description: "Man with spiky hair, headphones around neck", image: "character16.png", gender: "male" },
+  { id: 17, name: "River", description: "Person with green hair, piercings, hoodie", image: "character17.png", gender: "neutral" },
+  { id: 18, name: "Aurora", description: "Woman with hat, scarf, and coat", image: "character18.png", gender: "female" },
+  { id: 19, name: "Jamal", description: "Man with dreadlocks, casual t-shirt", image: "character19.png", gender: "male" },
+  { id: 20, name: "Blake", description: "Young man, messy blonde hair, hoodie", image: "character20.png", gender: "male" },
+  { id: 21, name: "Victoria", description: "Woman with long straight hair, red lipstick, formal blouse", image: "character21.png", gender: "female" },
+  { id: 22, name: "Bear", description: "Man with long beard, beanie, casual jacket", image: "character22.png", gender: "male" },
+  { id: 23, name: "Sunny", description: "Woman with curly short hair, yellow dress", image: "character23.png", gender: "female" },
+  { id: 24, name: "Oliver", description: "Man with medium-length hair, suit and tie", image: "character24.png", gender: "male" }
 ];
 
 // Generate a random 4-6 digit room code

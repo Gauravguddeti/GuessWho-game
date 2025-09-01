@@ -22,12 +22,27 @@ function App() {
   const [isHost, setIsHost] = useState(false);
   const [selectedSecretCharacter, setSelectedSecretCharacter] = useState(null);
   const [readyCount, setReadyCount] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [notification, setNotification] = useState('');
+  const [connectingToServer, setConnectingToServer] = useState(true);
 
   // Initialize socket connection
   useEffect(() => {
     const serverUrl = process.env.REACT_APP_SERVER_URL || 'http://localhost:3001';
     const newSocket = io(serverUrl);
     setSocket(newSocket);
+
+    // Connection status handlers
+    newSocket.on('connect', () => {
+      setConnectingToServer(false);
+      setNotification('Connected to server! 🎮');
+      setTimeout(() => setNotification(''), 3000);
+    });
+
+    newSocket.on('disconnect', () => {
+      setConnectingToServer(true);
+      setNotification('Connection lost. Reconnecting... 🔄');
+    });
 
     // Socket event listeners
     newSocket.on('gameCreated', ({ roomCode, playerName }) => {
@@ -36,6 +51,9 @@ function App() {
       setGameState('lobby');
       setIsHost(true);
       setError('');
+      setLoading(false);
+      setNotification(`Game created! Room code: ${roomCode} 🎯`);
+      setTimeout(() => setNotification(''), 5000);
     });
 
     newSocket.on('gameJoined', ({ roomCode, playerName }) => {
@@ -44,6 +62,9 @@ function App() {
       setGameState('lobby');
       setIsHost(false);
       setError('');
+      setLoading(false);
+      setNotification('Successfully joined the game! 🎉');
+      setTimeout(() => setNotification(''), 3000);
     });
 
     newSocket.on('joinError', (errorMsg) => {
@@ -129,6 +150,9 @@ function App() {
 
     newSocket.on('error', (errorMsg) => {
       setError(errorMsg);
+      setLoading(false);
+      setNotification(`Error: ${errorMsg} ❌`);
+      setTimeout(() => setNotification(''), 5000);
     });
 
     return () => {
@@ -137,12 +161,16 @@ function App() {
   }, [playerName]); // Add playerName to dependencies
 
   const createGame = (name) => {
+    setLoading(true);
     setPlayerName(name);
+    setNotification('Creating game... 🎮');
     socket.emit('createGame', name);
   };
 
   const joinGame = (name, code) => {
+    setLoading(true);
     setPlayerName(name);
+    setNotification('Joining game... 🎯');
     socket.emit('joinGame', { roomCode: code, playerName: name });
   };
 
@@ -210,6 +238,64 @@ function App() {
 
   return (
     <div>
+      {/* Loading Overlay */}
+      {(connectingToServer || loading) && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.7)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 1000
+        }}>
+          <div style={{
+            backgroundColor: 'white',
+            padding: '30px',
+            borderRadius: '15px',
+            textAlign: 'center',
+            boxShadow: '0 10px 30px rgba(0,0,0,0.3)'
+          }}>
+            <div style={{
+              fontSize: '40px',
+              animation: 'spin 1s linear infinite',
+              marginBottom: '15px'
+            }}>🎮</div>
+            <div style={{
+              fontSize: '18px',
+              fontWeight: 'bold',
+              color: '#333'
+            }}>
+              {connectingToServer ? 'Connecting to server...' : 'Loading...'}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Notification */}
+      {notification && (
+        <div style={{
+          position: 'fixed',
+          top: '20px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          backgroundColor: '#4CAF50',
+          color: 'white',
+          padding: '15px 25px',
+          borderRadius: '25px',
+          fontSize: '16px',
+          fontWeight: 'bold',
+          boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
+          zIndex: 1001,
+          animation: 'slideDown 0.3s ease-out'
+        }}>
+          {notification}
+        </div>
+      )}
+
       {/* Debug info */}
       <div style={{
         position: 'fixed',
